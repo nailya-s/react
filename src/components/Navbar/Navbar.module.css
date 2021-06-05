@@ -1,0 +1,28 @@
+.nav{
+  grid-area: n;
+  background-color: #262626;
+  padding: 20px;
+}
+
+.item a{
+  color:white;
+  font-family: "Helvetica Neue";
+  text-decoration: none;
+}
+
+.item a.activeLink{
+  color:gold;
+
+}
+
+.itemFriends{
+  color: aliceblue;
+  font-family: "Helvetica Neue";
+  margin-top: 30px;
+}
+
+.itemFriends img{
+  width: 30px;
+  height: 30px;
+  border-radius:30px;
+}

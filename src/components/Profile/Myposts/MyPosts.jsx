@@ -7,16 +7,17 @@ import Post from './Post/Post';
 
 const MyPosts = (props) => {
 
-  let postsElements = props.posts.map(p => <Post message={p.message} like={p.like} />);
+  let postsElements = props.posts.map(p => <Post message={p.message} key= {p.id} like={p.like} />);
   let newPostElement = React.createRef();
+  
   let addPost = () => {
-    props.dispatch(addPostActionCreator());
+    props.addpost();
 
   };
 
   let onPostChange = () =>{
     let text = newPostElement.current.value;
-    props.dispatch(updateNewPostTextActionCreator(text));
+    props.onPostChange(text);
   };
 
   return (

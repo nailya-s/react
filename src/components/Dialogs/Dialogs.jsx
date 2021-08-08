@@ -2,6 +2,8 @@ import React from 'react';
 import s from './Dialogs.module.css';
 import DialogItem from './DialogItem/DialogItem';
 import Message from './Message/Message';
+import { Redirect } from 'react-router-dom';
+import { useForm } from "react-hook-form";
 
 
 const Dialogs = (props) => {
@@ -12,14 +14,13 @@ const Dialogs = (props) => {
     let messagesElements = state.messages.map(m => <Message info={m.message} key= {m.id}/>);
     let newMessageBody = state.newMessageBody;
 
-    let onMessageChange = (e)=>{
-        let body = e.target.value;
-    props.updateNewMessageBody(body);
+
+    let onSendMessageClick = (values) => {
+        props.sendMessage(values.newMessageBody);
     };
 
-    let onSendMessageClick = () => {
-        props.sendMessage();
-    }
+
+    if(!props.isAuth) return <Redirect to='/login'/>;
 
     return (
         <div>
@@ -30,13 +31,27 @@ const Dialogs = (props) => {
                 <div className={s.messages}>
                     <div>{messagesElements}</div>
                     <div>
-                        <div className={s.messages}><textarea  onChange={onMessageChange} value={newMessageBody} placeholder="write your message"></textarea></div>
-                        <div className={s.messages}><button onClick = {onSendMessageClick}>SEND</button></div>
+                        <AddMessageForm onSendMessageClick={onSendMessageClick}/>
                     </div>
                 </div>
             </div>
         </div>
     );
 };
+const AddMessageForm = (props) => {
+
+    const { register, handleSubmit} = useForm();
+    const onSubmit = (data, e) => {
+        props.onSendMessageClick(data);
+        e.target.reset();  // reset after form submit
+      }; 
+   
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <textarea {...register("newMessageBody")} placeholder="write your message"></textarea>
+        <input type="submit" />
+      </form>
+    );
+  }
 
 export default Dialogs;

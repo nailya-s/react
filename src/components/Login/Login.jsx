@@ -2,9 +2,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { usersAPI } from './../../Api/api';
 import {connect} from 'react-redux';
 import {login} from './../../redux/authReducer';
+import { Redirect } from 'react-router-dom';
 
 
 const schema = yup.object().shape({
@@ -14,26 +14,33 @@ const schema = yup.object().shape({
 });
 
 
+
+
 const Login = (props) => {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm( {resolver: yupResolver(schema)});
+
+
+  const { register, handleSubmit, formState: { errors } } = useForm( {resolver: yupResolver(schema)});
   
-  const onSubmit = (data, e) => {
-    props.login(data.email, data.password);
-   // reset after form submit
+  const onSubmit =  (data, e) => {
+      props.login(data.email, data.password, data.rememberMe);
+    e.target.reset();// reset after form submit
   };
 
+if (props.isAuth){
+  return <Redirect to= {"/profile"}/>;
+} 
 
-  console.log(watch("email")); 
+
+
 
   return (
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/* register your input into the hook by invoking the "register" function */}
       <h1>LOGIN</h1>
       <div>
       <input {...register("email")} placeholder="login"/>
       </div>
-      <p>{errors.login?.message}</p>
+      <p>{errors?.email && `Error:${errors?.email?.message}`}</p>
       {/* include validation with required or other standard HTML validation rules */}
       <div>
         <input type="password" {...register("password")} placeholder="password" />
@@ -42,9 +49,16 @@ const Login = (props) => {
         <input type="checkbox" {...register("rememberMe")} /><label>remember me</label>
         </div>
         <p>{errors.password?.message}</p>
+        <div>{props.errorMessage}</div>
       <input type="submit" />
+      
     </form>
   );
 }
+let mapStateToProps = (state) => ({
+  isAuth: state.auth.isAuth,
+  isError: state.auth.isError,
+  errorMessage: state.auth.errorMessage
+});
 
-export default connect (null, {login})(Login)
+export default connect (mapStateToProps, {login})(Login)

@@ -7,7 +7,9 @@ let initialState = {
   userId: null,
   email: null,
   login: null,
-  isAuth: false
+  isAuth: false,
+  isError: false,
+  errorMessage: ''
 };
 
 const authReducer = (state = initialState, action) => {
@@ -15,8 +17,7 @@ const authReducer = (state = initialState, action) => {
     case SET_AUTH_USER:
       return {
         ...state,
-        ...action.data,
-          isAuth: true
+        ...action.data
       }
       default:
         return state;
@@ -24,14 +25,16 @@ const authReducer = (state = initialState, action) => {
 };
 
 
-export const setAuthUser = (id, email, login, isAuth) => {
+export const setAuthUser = (userId, email, login, isAuth, isError, errorMessage) => {
   return {
     type: SET_AUTH_USER,
     data: {
-      id,
+      userId,
       email,
       login,
-      isAuth
+      isAuth,
+      isError, 
+      errorMessage,
     }
   };
 };
@@ -58,6 +61,10 @@ export const login = (email, password, rememberMe = false) => {
       .then(response => {
         if (response.data.resultCode === 0) {
           dispatch(authUserThunkCreator());
+        } else{
+          let message = response.data.messages.length >0 ? response.data.messages[0]: "Some error";
+          console.log(message)
+          dispatch(setAuthUser(null, null, null, false, true, message));
         }
       });
   };

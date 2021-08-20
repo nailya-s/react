@@ -40,9 +40,8 @@ export const setAuthUser = (userId, email, login, isAuth, isError, errorMessage)
 };
 
 export const authUserThunkCreator = () => {
-  return (dispatch) => {
-    usersAPI.authUser()
-      .then(data => {
+  return async (dispatch) => {
+    let data = await usersAPI.authUser()
         if (data.resultCode === 0) {
           let {
             id,
@@ -51,14 +50,12 @@ export const authUserThunkCreator = () => {
           } = data.data;
           dispatch(setAuthUser(id, email, login, true));
         }
-      });
   };
 };
 
 export const login = (email, password, rememberMe = false) => {
-  return (dispatch) => {
-    usersAPI.loginUser(email, password, rememberMe)
-      .then(response => {
+  return async (dispatch) => {
+    let response = await usersAPI.loginUser(email, password, rememberMe)
         if (response.data.resultCode === 0) {
           dispatch(authUserThunkCreator());
         } else{
@@ -66,18 +63,15 @@ export const login = (email, password, rememberMe = false) => {
           console.log(message)
           dispatch(setAuthUser(null, null, null, false, true, message));
         }
-      });
   };
 };
 
 export const logout = () => {
-  return (dispatch) => {
-    usersAPI.logoutUser()
-      .then(data => {
+  return async (dispatch) => {
+    let data = await usersAPI.logoutUser()
         if (data.resultCode === 0) {
           dispatch(authUserThunkCreator(null, null, null, false));
         }
-      });
   };
 };
 

@@ -12,7 +12,6 @@ const Dialogs = (props) => {
 
     let dialogsElements = state.dialogs.map(d => <DialogItem name={d.name} key= {d.id} id={d.id} img={d.img} />);
     let messagesElements = state.messages.map(m => <Message info={m.message} key= {m.id}/>);
-    let newMessageBody = state.newMessageBody;
 
 
     let onSendMessageClick = (values) => {
@@ -49,7 +48,7 @@ const AddMessageForm = (props) => {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <textarea {...register("newMessageBody")} placeholder="write your message"></textarea>
-        <input type="submit" />
+        <div><input type="submit" /></div>
       </form>
     );
   }

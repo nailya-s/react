@@ -22,7 +22,11 @@
     padding: 10px;
     font-family: "Helvetica Neue"
 }
-  
-.messages message{
+
+.button {
+    background-color: transparent;
+    color:black;
+    border-radius: 5px;
+    border: 2px solid;
 
 }

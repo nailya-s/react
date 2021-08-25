@@ -4,15 +4,17 @@ import s from './ProfileInfo.module.css';
 import ProfileStatusHook from './ProfileStatusHook';
 
 const ProfileInfo = (props) => {
-
+  
+  let userPhoto = 'https://www.pngall.com/wp-content/uploads/5/Profile-PNG-File.png'
   let profile = props.profile;
   if (!profile) {
     return <Preloader />
   }
+  
   return (
     <div>
-      <div>
-        <img src={profile.photos.large} />
+      <div className={s.userPhoto}>
+        <img src={profile.photos.large!= null ? profile.photos.large : userPhoto} />
       </div>
       <div>
         <ProfileStatusHook status= {props.status} updateStatus={props.updateStatus}/>

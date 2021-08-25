@@ -48,7 +48,7 @@ const AddMessageForm = (props) => {
     return (
       <form onSubmit={handleSubmit(onSubmit)}>
         <textarea {...register("newMessageBody")} placeholder="write your message"></textarea>
-        <div><input type="submit" /></div>
+        <div ><input className={s.button} type="submit" /></div>
       </form>
     );
   }

@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 
 
-const Paginator = ({currentPage, onPageChanged, totalUsersCount, pageSize, portionSize=5}) => {
+const Paginator = ({currentPage, onPageChanged, totalUsersCount, pageSize, portionSize=10}) => {
 
     let pagesCount = Math.ceil(totalUsersCount / pageSize);
 
